@@ -1,0 +1,11 @@
+# Trump Presidency Countdown
+
+> A live countdown to the end of Donald Trump's second term as President of the United States. The countdown ends at noon Eastern Time on January 20, 2029, the constitutional moment when the next presidential term begins.
+
+## About
+
+The site displays the time remaining — days, hours, minutes, and seconds — until Donald Trump's second presidential term concludes. The target instant is fixed at 17:00 UTC on 2029-01-20 (noon EST; January is outside US daylight saving time, so the timezone is unambiguous).
+
+## Pages
+
+- [Home](https://www.trump-countdown-timer.com): The countdown.
