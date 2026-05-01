@@ -1,29 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+import {
+  getConsent,
+  getServerConsent,
+  setConsent,
+  subscribeConsent,
+} from "@/lib/consent";
 
-const STORAGE_KEY = "cookie-consent";
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
-type Choice = "accepted" | "rejected";
-
 export function ConsentBanner() {
-  const [show, setShow] = useState(false);
+  const consent = useSyncExternalStore(
+    subscribeConsent,
+    getConsent,
+    getServerConsent,
+  );
 
-  useEffect(() => {
-    if (!GA_ID) return;
-    if (!localStorage.getItem(STORAGE_KEY)) setShow(true);
-  }, []);
-
-  function decide(choice: Choice) {
-    localStorage.setItem(STORAGE_KEY, choice);
-    window.dispatchEvent(
-      new CustomEvent<Choice>("consent-change", { detail: choice }),
-    );
-    setShow(false);
-  }
-
-  if (!show) return null;
+  if (!GA_ID || consent !== null) return null;
 
   return (
     <div
@@ -51,7 +45,7 @@ export function ConsentBanner() {
       <div className="mt-4 flex gap-2 justify-end">
         <button
           type="button"
-          onClick={() => decide("rejected")}
+          onClick={() => setConsent("rejected")}
           className="
             px-4 py-2 text-sm font-medium rounded-lg
             bg-zinc-800 text-zinc-200
@@ -64,7 +58,7 @@ export function ConsentBanner() {
         </button>
         <button
           type="button"
-          onClick={() => decide("accepted")}
+          onClick={() => setConsent("accepted")}
           className="
             px-4 py-2 text-sm font-semibold rounded-lg
             bg-white text-black
